@@ -27,8 +27,9 @@ SELECT
 	*
 FROM employees
 WHERE
-	emp_id = 10001
-	OR emp_id = 10005
+	-- emp_id = 10001
+-- 	OR emp_id = 10005
+	emp_id IN (10001, 10005)
 ;
 
 -- 5. 직급에 '사'가 포함된 직급코드와 직급명을 조회해 주세요.
@@ -41,15 +42,17 @@ WHERE
 ;
 
 -- 6. 사원 이름 오름차순으로 정렬해서 조회해 주세요.
+-- + 생일 오름차순
 SELECT
 	*
 FROM employees
-ORDER BY `name`
+ORDER BY `name`, birth
 ;
 
 -- 7. 사원별 전체 급여의 평균을 조회해 주세요.
 SELECT
-	AVG(salary) sal_avg
+	emp_id
+	, CEILING(AVG(salary)) sal_avg
 FROM salaries
 WHERE
 	end_at IS NULL
@@ -65,17 +68,18 @@ FROM salaries
 WHERE
 	end_at IS NULL
 GROUP BY emp_id
-	HAVING sal_avg BETWEEN 30000000 AND 50000000
+	HAVING AVG(salary) BETWEEN 30000000 AND 50000000
 ;
 
 -- 9. 사원별 전체 급여 평균이 70,000,000이상인,
 --   사원의 사번, 이름, 성별을 조회해 주세요.
+-- JOIN이 더 효율적. 서브쿼리 복습 ~
 SELECT
-	employees.emp_id
-	, employees.`name`
-	, employees.gender
-FROM employees
-WHERE emp_id IN (
+	emp.emp_id
+	, emp.`name`
+	, emp.gender
+FROM employees emp
+WHERE emp.emp_id IN (
 		SELECT
 			salaries.emp_id
 		FROM salaries
@@ -86,7 +90,7 @@ WHERE emp_id IN (
 ;
 
 -- XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
--- 기본적으로 r기준이 되는 컬럼 쓰고 연산자 쓰고 ~ 조건 쓰고 ~
+-- 기본적으로 기준이 되는 컬럼 쓰고 연산자 쓰고 ~ 조건 쓰고 ~
 -- SELECT
 -- 	emp.emp_id
 -- 	, emp.`name`
@@ -108,9 +112,9 @@ SELECT
 FROM employees emp
 WHERE
 	emp.emp_id IN (
-		SELECT title_emps.emp_id
-		FROM title_emps
-		WHERE title_emps.title_code = 'T005'
-				AND title_emps.end_at IS NULL
+		SELECT tie.emp_id
+		FROM title_emps tie
+		WHERE tie.title_code = 'T005'
+				AND tie.end_at IS NULL
 	)
 ;
