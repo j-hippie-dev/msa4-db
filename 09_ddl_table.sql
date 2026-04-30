@@ -69,6 +69,3 @@ DROP TABLE posts;
 DROP TABLE users;
 -- 축약
 DROP TABLE posts, users;
-
-
-
