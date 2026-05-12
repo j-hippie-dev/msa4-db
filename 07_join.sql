@@ -10,9 +10,7 @@
 -- -------------------------
 -- 전 사원의 사번, 이름, 현재급여를 출력해주세요.
 SELECT
-	emp.emp_id
-	, emp.`name`
-	, sal.salary
+	*
 FROM employees emp
 	INNER JOIN salaries sal
 		ON emp.emp_id = sal.emp_id
@@ -81,3 +79,8 @@ FROM employees emp
 		ON emp.sup_id = supe.emp_id
 			AND emp.sup_id IS NOT NULL
 ;
+
+-- ON 절에서 AND로 조건 주는게 더 좋음.
+-- WHERE절에서 주는건 가독성을 위해.
+-- ON: join할 때 만들어줄 규칙
+-- WHERE: 출력할 때 보여줄 조건
