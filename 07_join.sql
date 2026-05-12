@@ -55,6 +55,21 @@ FROM employees emp
 			AND sal.end_at IS NULL
 ;
 
+SELECT
+	employees.emp_id
+	, employees.`name`
+	, CASE salaries.salary
+		WHEN salaries.salary IS NULL THEN '정보없음'
+		ELSE salaries.salary
+	END salary
+FROM employees
+	LEFT JOIN salaries
+		ON employees.emp_id = salaries.emp_id
+			AND salaries.end_at IS NULL
+WHERE employees.fire_at IS NULL
+ORDER BY employees.emp_id DESC
+;
+
 
 -- ----------------------
 --  UNION

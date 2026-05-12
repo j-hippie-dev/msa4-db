@@ -220,3 +220,40 @@ WHERE
 	AND emp.fire_at IS NULL
 GROUP BY tie.title_code, emp.gender
 ;
+
+-- ------------------------------
+-- ** 지윤씨가 만든 문제 **
+-- 전체 평균 급여보다 높은 급여를 받은 기록을 조회
+SELECT
+	emp.emp_id
+	,emp.`name`
+	,sal.salary
+FROM salaries sal
+	JOIN employees emp
+		ON sal.emp_id = emp.emp_id
+			AND emp.fire_at IS NULL
+WHERE
+	sal.salary >= (
+		SELECT
+			AVG(sala.salary) avg_sal
+		FROM salaries sala
+		WHERE
+			sala.end_at IS NULL
+	)
+	AND sal.end_at IS NULL
+ORDER BY sal.salary ASC
+;
+
+
+-- 가장 높은 급여를 받은 이력이있는 사원의 사번과 급여를 조회
+SELECT
+	sal.emp_id
+	,sal.salary
+FROM salaries sal
+WHERE
+	sal.salary = (
+		SELECT
+			MAX(salary)
+		FROM salaries
+	)
+;
